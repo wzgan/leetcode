@@ -4,7 +4,7 @@
 
 // https://leetcode.com/problems/maximum-depth-of-binary-tree/
 
-#include <stack>
+#include <queue>
 
 //Definition for a binary tree node.
 struct TreeNode
@@ -29,7 +29,25 @@ public:
 
     int maxDepth2(TreeNode* root)
     {
-        return 1;
+        if (!root) return 0;
+
+        std::queue<TreeNode*> nodeQueue;
+        nodeQueue.push(root);
+        int levelCnt = 0, levelFlag = 1;
+        while (!nodeQueue.empty())
+        {
+            TreeNode* node = nodeQueue.front();
+            nodeQueue.pop();
+            levelFlag--;
+            if (node->left) nodeQueue.push(node->left);
+            if (node->right) nodeQueue.push(node->right);
+            if (levelFlag == 0)
+            {
+                levelCnt++;
+                levelFlag = nodeQueue.size();
+            }
+        }
+        return levelCnt;
     }
 };
 

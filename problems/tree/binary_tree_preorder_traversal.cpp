@@ -70,4 +70,24 @@ public:
         }
         return resVec;
     }
+
+    //non-recursive
+    std::vector<int> preorderTraversal2_2(TreeNode* root)
+    {
+        std::vector<int> resVec;
+        std::stack<TreeNode*> nodeStack;
+        TreeNode* p = root;
+        while (!nodeStack.empty() || p)
+        {
+            while (p)
+            {
+                resVec.push_back(p->val);
+                nodeStack.push(p);
+                p = p->left;
+            }
+            p = nodeStack.top()->right;
+            nodeStack.pop();
+        }
+        return resVec;
+    }
 };

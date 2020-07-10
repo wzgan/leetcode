@@ -14,9 +14,10 @@ struct TreeNode
 
 class Solution {
 public:
+    //preVal: 已遍历部分的sum
     int helper(TreeNode* root, int preVal)
     {
-        if (!root) return 0;
+        if (!root) return preVal;
 
         int rVal = helper(root->right, preVal);
         root->val += rVal;

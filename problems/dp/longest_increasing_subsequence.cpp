@@ -18,7 +18,7 @@ public:
         {
             for (int j = 0; j < i; ++j)
             {
-                if (nums[i] >= nums[j])
+                if (nums[i] > nums[j])
                     dp[i] = std::max(dp[i], dp[j] + 1);
             }
         }

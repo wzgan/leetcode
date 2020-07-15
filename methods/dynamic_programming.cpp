@@ -108,7 +108,7 @@ int coinChange3(std::vector<int>& coins, int amount)
     return dp[amount] == amount + 1 ? -1 : dp[amount];
 }
 
-//按照完全背包问题的递推关系式
+//按照完全背包问题(coins change 2)的递推关系式
 int coinsChange4(std::vector<int>& coins, int amount)
 {
     std::vector<std::vector<int>> dp(coins.size()+1, std::vector<int>(amount+1, amount+1));

@@ -6,6 +6,7 @@
 
 class Solution {
 public:
+    //like a link-list circle
     int findDuplicate(std::vector<int>& nums)
     {
         int s = nums[0], q = nums[0];
@@ -26,5 +27,25 @@ public:
         }
 
         return s;
+    }
+
+    //use index
+    int findDuplicate2(std::vector<int>& nums)
+    {
+//        for (int i = 0; i < nums.size(); ++i)
+//        {
+//            while (nums[i] != i)
+//            {
+//                if (nums[nums[i]] == nums[i])
+//                    return nums[i];
+//                std::swap(nums[i], nums[nums[i]]);
+//            }
+//        }
+        while(1)
+        {
+            if (nums[nums[0]] == nums[0])
+                return nums[0];
+            std::swap(nums[0], nums[nums[0]]);
+        }
     }
 };

@@ -83,7 +83,7 @@ int KmpMatch(const std::string &s, const std::string &p)
     return -1;
 }
 
-//
+//////
 //dfa
 std::vector<std::vector<int>> getDfa(const std::string &p)
 {

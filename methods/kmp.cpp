@@ -83,10 +83,29 @@ int KmpMatch(const std::string &s, const std::string &p)
     return -1;
 }
 
+//
 //dfa
-std::vector<int, std::vector<int>> getDfa(const std::string &p)
+std::vector<std::vector<int>> getDfa(const std::string &p)
 {
-
+    int m = p.size();
+    std::vector<std::vector<int>> dfa(m, std::vector<int>(26, 0));
+    dfa[0][p[0]] = 1;
+    int x = 0;
+    for(int j = 1; j < m; ++j)
+    {
+        for(int c = 'a'; c <= 'z'; ++c)
+        {
+            if(c == p[j])
+            {
+                dfa[j][c] = j+1;
+            }
+            else
+            {
+                dfa[j][c] = dfa[x][c];
+            }
+        }
+        x = dfa[x][p[j]];
+    }
 }
 
 int kmpMatch_dfa(const std::string &s, const std::string &p)
@@ -94,7 +113,7 @@ int kmpMatch_dfa(const std::string &s, const std::string &p)
     int n = s.size(), m = p.size();
     int j = 0;
 
-    std::vector<int, std::vector<int>> dfa = getDfa(p);
+    std::vector<std::vector<int>> dfa = getDfa(p);
     for (int i = 0; i < n; i++)
     {
         j = dfa[j][s[i]];

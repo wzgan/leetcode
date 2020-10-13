@@ -23,20 +23,37 @@ std::vector<int> getNext_brute(const std::string& p)
 //dp
 std::vector<int> getNext_dp(const std::string &p)
 {
-    
-}
-
-//another dp using fsm
-std::vector<int> getNext_fsm(const std::string &p)
-{
-    
+    int sz = p.size();
+    std::vector<int> next(sz, 0);
+    next[0] = 0;
+    for (int i = 1; i < sz; i++)
+    {
+        if(p[i] == p[next[i-1]])
+        {
+            next[i] = next[i-1]+1;
+        }
+        else
+        {
+            int now = next[i-1];
+            while (next[now-1] != 0)
+            {
+                now = next[now-1];
+                if(p[now] == p[i])
+                {
+                    next[i] = next[now-1]+1;
+                }
+            }
+            next[i] = 0;
+        }
+    }
+    return next;
 }
 
 int KmpMatch(const std::string &s, const std::string &p)
 {
     int s_sz = s.length(), p_sz = p.length();
     
-    std::vector<int> next = getNext_brute(p); 
+    std::vector<int> next = getNext_dp(p); 
 
     int i = 0, j = 0;
     while (i < s_sz)
@@ -63,5 +80,28 @@ int KmpMatch(const std::string &s, const std::string &p)
             return i-j;
         }
     }
-    return false;
+    return -1;
+}
+
+//dfa
+std::vector<int, std::vector<int>> getDfa(const std::string &p)
+{
+
+}
+
+int kmpMatch_dfa(const std::string &s, const std::string &p)
+{
+    int n = s.size(), m = p.size();
+    int j = 0;
+
+    std::vector<int, std::vector<int>> dfa = getDfa(p);
+    for (int i = 0; i < n; i++)
+    {
+        j = dfa[j][s[i]];
+        if(j == m)
+        {
+            return i-m+1;
+        }
+    }
+    return -1;
 }

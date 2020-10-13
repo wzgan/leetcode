@@ -26,6 +26,12 @@ std::vector<int> getNext_dp(const std::string &p)
     
 }
 
+//another dp using fsm
+std::vector<int> getNext_fsm(const std::string &p)
+{
+    
+}
+
 int KmpMatch(const std::string &s, const std::string &p)
 {
     int s_sz = s.length(), p_sz = p.length();

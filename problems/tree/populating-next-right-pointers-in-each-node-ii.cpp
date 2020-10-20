@@ -45,4 +45,10 @@ public:
     	}
     	return root;
     }
+
+    //dfs
+    connect2(Node* root)
+    {
+    	
+    }
 };

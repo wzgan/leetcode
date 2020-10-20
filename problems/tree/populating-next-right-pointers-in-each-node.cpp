@@ -41,5 +41,10 @@ public:
 
         helper(root->left, root->right);
         return root;
-    }    
+    }
+
+    Node* connect2(Node* root)
+    {
+        
+    }
 };

@@ -23,14 +23,26 @@ public:
 	//bfs level-traverse
     Node* connect(Node* root) 
     {
-        std::queue<Node*> q1;
-        std::queue<Node*> q2;
-
-       
-        while(!q1.empty() && !q2.empty())
-        {
-
-        }
-
+    	Node dummy();
+    	dummy.next = root;
+    	while(dummy.next)
+    	{
+    		Node* tail = &dummy, *cur = dummy.next;
+    		while(cur)
+    		{
+    			if(cur->left)
+    			{
+    				tail->next = cur->left;
+    				tail = tail->next;
+    			} 	
+    			if(cur->right)
+    			{
+    				tail->next = cur->right;
+    				tail = tail->next;
+    			}
+    			cur = cur->next;
+    		}
+    	}
+    	return root;
     }
 };

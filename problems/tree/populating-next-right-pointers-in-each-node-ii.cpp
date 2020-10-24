@@ -1,5 +1,7 @@
 //https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
 
+#include <cstddef>
+
 // Definition for a Node.
 class Node {
 public:
@@ -23,11 +25,12 @@ public:
 	//bfs level-traverse
     Node* connect(Node* root) 
     {
-    	Node dummy();
+    	Node dummy;
     	dummy.next = root;
     	while(dummy.next)
     	{
     		Node* tail = &dummy, *cur = dummy.next;
+            dummy.next = nullptr;
     		while(cur)
     		{
     			if(cur->left)
@@ -47,8 +50,28 @@ public:
     }
 
     //dfs
-    connect2(Node* root)
+    std::vector<Node*> rNodeInEachLevel;
+
+	void dfs(Node* root, int level)
     {
-    	
+	    if (!root)
+	        return;
+	    if (level < rNodeInEachLevel.size())
+        {
+	        rNodeInEachLevel[level]->next = root;
+	        rNodeInEachLevel[level] = root;
+        }
+	    else
+        {
+	        rNodeInEachLevel.push_back(root);
+        }
+        dfs(root->left, level+1);
+	    dfs(root->right, level+1);
+    }
+
+    Node* connect2(Node* root)
+    {
+        dfs(root, 0);
+        return root;
     }
 };

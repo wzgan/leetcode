@@ -65,4 +65,17 @@ public:
     }
 
     void flatten3(TreeNode* root)
+    {    
+    	if (!root)
+    	{
+    		return false;
+    	}
+
+		flatten3(root->right);
+    	flatten3(root->left);
+
+    	root->left = nullptr;
+    	root->right = prev;
+    	prev = root;
+    }
 };

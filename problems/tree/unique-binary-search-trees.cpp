@@ -13,7 +13,7 @@ public:
         	int res = 2*memo[i-1];
         	for (int j = 1; j <= i-2; ++j)
         	{
-        		res += memo[j] * memo[n-j-1];
+        		res += memo[j] * memo[i-j-1];
         	}
         	memo[i] = res;
         }

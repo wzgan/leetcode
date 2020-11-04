@@ -1,4 +1,4 @@
-//https://leetcode.com/problems/validate-binary-search-tree/
+// https://leetcode.com/problems/validate-binary-search-tree/
 
 struct TreeNode {
 	int val;
@@ -11,62 +11,44 @@ struct TreeNode {
  
 class Solution {
 public:
-    bool res;
-
-	void helper(TreeNode* root, int& min, int& max)
+	bool helper(TreeNode* root, long& min, long& max)
 	{
-		if (!root || !res)
+		if (!res || !root)
 		{
+			min = LONG_MIN;
+			max = LONG_MAX;
 			return;
 		}
 
-		int lmin, lmax, rmin, rmax;
+		int lmin, lmax;
 		helper(root->left, lmin, lmax);
+		if (root->val <= lmax)
+		{
+			return false;
+		}
+
+		int rmin, rmax;
 		helper(root->right, rmin, rmax);
-
-		min = root->val; 
-		max = root->val;
-
-		if (!root->left && root->right)
+		if (root->val >= rmin)
 		{
-			if (rmin <= root->val)
-			{
-				res = false;
-				return;
-			}
-			
-			max = rmax;
-		}
-		else if (root->left && !root->right)
-		{
-			if (lmax >= root->val)
-			{
-				res = false;
-				return;
-			}
-
-			min = lmin;
-		}
-		else if (root->left && root->right)
-		{
-			if (lmax >= root->val || rmin <= root->val)
-			{
-				res = false;
-				return;
-			}
-
-			min = lmin;
-			max = rmax;
+			return false;
 		}
 
-		return;
+		min = std::min(lmin, root->val);
+		max = std::man(rmax, root->val);
 	}
 
     bool isValidBST(TreeNode* root)
     {
-        res = true;
-        int min, max;
-        helper(root, min, max);
-        return res;
+        long min, max;
+        return helper(root, min, max);
+    }
+
+
+    bool validate(TreeNode*root, TreeNode*)
+
+    bool isValidBST2(TreeNode* root)
+    {
+
     }
 };

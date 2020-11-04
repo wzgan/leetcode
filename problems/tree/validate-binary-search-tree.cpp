@@ -11,30 +11,62 @@ struct TreeNode {
  
 class Solution {
 public:
-	bool res;
+    bool res;
 
-	int helper(TreeNode* root, bool bLeft)
+	void helper(TreeNode* root, int& min, int& max)
 	{
-		if (!root)
+		if (!root || !res)
 		{
-			return bLeft? INT_MIN: INT_MAX;
+			return;
 		}
 
-		int lmax = helper(root->left, true);
-		int rmin = helper(root->right, false);
+		int lmin, lmax, rmin, rmax;
+		helper(root->left, lmin, lmax);
+		helper(root->right, rmin, rmax);
 
-		if (lmax > root->val && rmin < root->val)
+		min = root->val; 
+		max = root->val;
+
+		if (!root->left && root->right)
 		{
-			res = false;
+			if (rmin <= root->val)
+			{
+				res = false;
+				return;
+			}
+			
+			max = rmax;
+		}
+		else if (root->left && !root->right)
+		{
+			if (lmax >= root->val)
+			{
+				res = false;
+				return;
+			}
+
+			min = lmin;
+		}
+		else if (root->left && root->right)
+		{
+			if (lmax >= root->val || rmin <= root->val)
+			{
+				res = false;
+				return;
+			}
+
+			min = lmin;
+			max = rmax;
 		}
 
-		return bLeft? 
+		return;
 	}
 
     bool isValidBST(TreeNode* root)
     {
         res = true;
-        helper(root, false);
+        int min, max;
+        helper(root, min, max);
         return res;
     }
 };

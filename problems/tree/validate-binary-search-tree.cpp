@@ -45,10 +45,23 @@ public:
     }
 
 
-    bool validate(TreeNode*root, TreeNode*)
+    bool validate(TreeNode*root, TreeNode* &prev)
+    {
+    	if (!root)
+    	{
+    		return true;
+    	}
+
+    	if(!validate(root->left, prev) || (prev && prev->val >= root->val)) return false;
+
+    	prev = root;
+
+ 		return validate(root->right, prev);
+    }
 
     bool isValidBST2(TreeNode* root)
     {
-
+    	TreeNode* prev = nullptr;
+    	return validate(root, prev);
     }
 };

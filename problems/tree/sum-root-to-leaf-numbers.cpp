@@ -16,7 +16,6 @@ struct TreeNode
 };
 
 #include <vector>
-#include <cmath>
 
 class Solution {
 public:
@@ -29,10 +28,12 @@ public:
         if (!root->left && !root->right)
         {
             int sz = track.size();
+            int temp = 0;
             for (int i = 0; i < sz; ++i)
             {
-                sum += track[sz-i-1] * std::pow(10, i);
+                temp = temp*10 + track[i];
             }
+            sum += temp;
             return;
         }
 
@@ -55,6 +56,36 @@ public:
         if (!root) return 0;
         track.push_back(root->val);
         bt(root);
+        return sum;
+    }
+
+    //not necessary to use vector to record every root-val, use num to record the former value in a certain path
+    std::vector<int> res;
+    void dfs(TreeNode* root, int num)
+    {
+        if (!root)
+            return;
+
+        num = num*10 + root->val;
+
+        if (!root->left && !root->right)
+        {
+            res.push_back(num);
+            return;
+        }
+
+        if (root->left) dfs(root->left, num);
+        if (root->right) dfs(root->right, num);
+    }
+
+    int sumNumbers2(TreeNode* root)
+    {
+        int num = 0, sum = 0;
+        dfs(root, num);
+        for (int val : res)
+        {
+            sum += val;
+        }
         return sum;
     }
 };

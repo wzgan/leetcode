@@ -4,6 +4,9 @@
 
 //https://leetcode.com/problems/letter-combinations-of-a-phone-number/submissions/
 
+#include <string>
+#include <vector>
+
 class Solution {
 public:
     std::vector<std::string> res;
@@ -40,11 +43,11 @@ public:
         {
             track += str[i];
             backtrack(digits, track);
-            track = track.substr(0, sz_track);
+            track.pop_back();
         }
     }
 
-    vector<string> letterCombinations(string digits)
+    std::vector<std::string> letterCombinations(std::string digits)
     {
         if(digits.length() == 0) return res;
         std::string track;

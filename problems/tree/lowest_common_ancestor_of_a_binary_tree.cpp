@@ -20,6 +20,55 @@ struct TreeNode
 
 class Solution {
 public:
+    struct searchRes
+    {
+        TreeNode* lca;
+        bool foundP;
+        bool foundQ;
+        searchRes(bool foundP, bool foundQ): foundP(foundP), foundQ(foundQ), lca(nullptr) {}
+    };
+    searchRes find(TreeNode* root, TreeNode* p, TreeNode* q)
+    {
+        searchRes res(false, false);
+        if (!root) return res;
+        if (root == p) res.foundP = true;
+        else if (root == q) res.foundQ = true;
+
+        searchRes lRes = find(root->left, p, q);
+        searchRes rRes = find(root->right, p, q);
+
+        if (lRes.foundP || rRes.foundP) res.foundP = true;
+        if (lRes.foundQ || rRes.foundQ) res.foundQ = true;
+        if (lRes.lca) res.lca = lRes.lca;
+        else if (rRes.lca) res.lca = rRes.lca;
+
+        if (res.foundP && res.foundQ && !res.lca) res.lca = root;
+        return res;
+    }
+
+    TreeNode* lowestCommonAncestor_1(TreeNode* root, TreeNode* p, TreeNode* q)
+    {
+        searchRes res = find(root, p, q);
+        return res.lca;
+    }
+
+
+    //better recursive solution
+    TreeNode* lowestCommonAncestor_2(TreeNode* root, TreeNode* p, TreeNode* q)
+    {
+        if (!root) return nullptr;
+
+        if (root == p || root == q) return root;
+
+        TreeNode* l = lowestCommonAncestor_2(root->left, p, q);
+        TreeNode* r = lowestCommonAncestor_2(root->right, p, q);
+
+        if (l && r) return root;
+        if (l) return l;
+        if (r) return r;
+        return nullptr;
+    }
+
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q)
     {
         if (!root || root->val == p->val || root->val == q->val)

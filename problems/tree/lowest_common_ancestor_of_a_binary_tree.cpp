@@ -125,32 +125,43 @@ public:
     {
         TreeNode* node;
         bool bVisited;
-        TreeNode* lRes;
-        TreeNode* rRes;
+        std::vector<TreeNode*> childRes;
         NewNode* parent;
 
-        NewNode(TreeNode* node) : node(node), bVisited(false), lRes(nullptr), rRes(nullptr), parent(nullptr) {}
+        NewNode(TreeNode* node, NewNode* parent) : node(node), bVisited(false), parent(parent) {}
     };
     TreeNode* lowestCommonAncestor3(TreeNode* root, TreeNode* p, TreeNode* q)
     {
+        NewNode dummy(nullptr, nullptr);
         std::stack<NewNode> nodeStack;
-        nodeStack.push(NewNode(root));
+        nodeStack.push(NewNode(root, &dummy));
 
         while (!nodeStack.empty())
         {
-            NewNode n_node = nodeStack.top();
+            NewNode& n_node = nodeStack.top();
 
             if (!n_node.node || n_node.node == p || n_node.node == q)
             {
-
-            }
-            if (!n_node.bVisited)
+                n_node.parent->childRes.push_back(n_node.node);
+                nodeStack.pop();
+            }else if (!n_node.bVisited)
             {
-                nodeStack.push(NewNode(root->right));
-                nodeStack.push(root->left);
-            } else if ()
-
-
+                nodeStack.push(NewNode(n_node.node->right, &n_node));
+                nodeStack.push(NewNode(n_node.node->left, &n_node));
+                n_node.bVisited = true;
+            } else
+            {
+                if (n_node.childRes[0] && n_node.childRes[1])
+                {
+                    return n_node.node;
+                }
+                else
+                {
+                    n_node.parent->childRes.push_back(n_node.childRes[0]?n_node.childRes[0]:n_node.childRes[1]);
+                }
+                nodeStack.pop();
+            }
         }
+        return dummy.childRes[0];
     }
 };

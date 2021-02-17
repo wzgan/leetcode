@@ -65,4 +65,39 @@ public:
         }
         return resVec;
     }
+
+    struct NewNode
+    {
+        TreeNode* node;
+        bool bVisited;
+
+        NewNode(TreeNode* node) : node(node), bVisited(false){}
+    };
+    std::vector<int> postorderTraversal_3(TreeNode* root)
+    {
+        std::vector<int> res;
+        std::stack<NewNode> nodeStack;
+        nodeStack.push(NewNode(root));
+
+        while (!nodeStack.empty())
+        {
+            NewNode& n_node = nodeStack.top();
+            if (!n_node.node)
+            {
+                nodeStack.pop();
+            }
+            else if (!n_node.bVisited)
+            {
+                nodeStack.push(n_node.node->right);
+                nodeStack.push(n_node.node->left);
+                n_node.bVisited = true;
+            }
+            else
+            {
+                res.push_back(n_node.node->val);
+                nodeStack.pop();
+            }
+        }
+        return res;
+    }
 };

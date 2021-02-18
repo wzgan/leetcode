@@ -16,6 +16,7 @@ struct TreeNode
 
 #include <vector>
 #include <queue>
+#include <deque>
 
 class Solution {
 public:
@@ -45,6 +46,45 @@ public:
                 if (front->right) nodeQue.push(front->right);
             }
 
+            bReverse = !bReverse;
+            res.push_back(levelVec);
+        }
+        return res;
+    }
+
+    std::vector<std::vector<int>> zigzagLevelOrder2(TreeNode* root)
+    {
+        std::vector<std::vector<int>> res;
+        if (!root)
+            return res;
+        std::deque<TreeNode*> nodeQue;
+        nodeQue.push_back(root);
+        bool bReverse = false;
+
+        while (!nodeQue.empty())
+        {
+            int levelNum = nodeQue.size();
+            std::vector<int> levelVec(levelNum);
+
+            for (int i = 0; i < levelNum; ++i)
+            {
+                if (!bReverse)
+                {
+                    TreeNode* top = nodeQue.front();
+                    nodeQue.pop_front();
+                    levelVec[i] = top->val;
+                    if (top->left) nodeQue.push_back(top->left);
+                    if (top->right) nodeQue.push_back(top->right);
+                }
+                else
+                {
+                    TreeNode* top = nodeQue.back();
+                    nodeQue.pop_back();
+                    levelVec[i] = top->val;
+                    if (top->right) nodeQue.push_front(top->right);
+                    if (top->left) nodeQue.push_front(top->left);
+                }
+            }
             bReverse = !bReverse;
             res.push_back(levelVec);
         }

@@ -2,7 +2,7 @@
 // Created by g23811 on 2021/2/18.
 //
 
-//https://leetcode.com/problems/binary-tree-level-order-traversal/
+//https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal
 
 struct TreeNode
 {
@@ -16,41 +16,17 @@ struct TreeNode
 
 #include <vector>
 #include <queue>
+
 class Solution {
 public:
-    std::vector<std::vector<int>> levelOrder(TreeNode* root)
-    {
-        std::vector<std::vector<int>> res;
-        if(!root) return res;
-        std::queue<TreeNode*> nodeQue;
-        nodeQue.push(root);
-        std::vector<int> level;
-        int levelNum = 1;
-        while(!nodeQue.empty())
-        {
-            TreeNode* front = nodeQue.front();
-            nodeQue.pop();
-            level.push_back(front->val);
-            if(front->left) nodeQue.push(front->left);
-            if(front->right) nodeQue.push(front->right);
-
-            if(level.size() == levelNum)
-            {
-                levelNum = nodeQue.size();
-                res.push_back(level);
-                level.clear();
-            }
-        }
-        return res;
-    }
-
-    std::vector<std::vector<int>> levelOrder2(TreeNode* root)
+    std::vector<std::vector<int>> zigzagLevelOrder(TreeNode* root)
     {
         std::vector<std::vector<int>> res;
         if (!root)
             return res;
         std::queue<TreeNode*> nodeQue;
         nodeQue.push(root);
+        bool bReverse = false;
 
         while (!nodeQue.empty())
         {
@@ -60,15 +36,18 @@ public:
             for (int i = 0; i < levelNum; ++i)
             {
                 TreeNode* front = nodeQue.front();
-                levelVec[i] = front->val;
                 nodeQue.pop();
+                if (bReverse)
+                    levelVec[levelNum-1-i] = front->val;
+                else
+                    levelVec[i] = front->val;
                 if (front->left) nodeQue.push(front->left);
                 if (front->right) nodeQue.push(front->right);
             }
 
+            bReverse = !bReverse;
             res.push_back(levelVec);
         }
-
         return res;
     }
 };
